@@ -19,6 +19,8 @@ import java.util.Scanner;
 
 输出例子1:
 122
+
+思路：如果n为偶数，则最后一步一定是通过机器2产生;如果n为奇数，则最后一步一定是通过机器1产生。倒着往前推回去就可以了，可以使用递归来实现，不过一定要注意递归的终止条件。
 */
 public class MagicCoins {
 
@@ -32,12 +34,34 @@ public class MagicCoins {
         while (in.hasNext()) {
             int count = in.nextInt();
             if (Math.pow(10, 9) >= count && count > 0) {
-                StringBuilder sb = new StringBuilder(count + "");
+                StringBuilder sb = new StringBuilder();
+                chooseMagic(count, sb);
                 int b = Integer.parseInt(sb.reverse().toString());
-                System.out.println(count + b);
+                System.out.println(b);
             } else {
                 System.out.print("输入有误！魔法币数量n，1 ≤ n ≤ 10^9 ！");
             }
+        }
+    }
+
+    private static void chooseMagic(int n, StringBuilder sb) {
+        //递归的终止条件
+        if (n == 1) {
+            sb.append("1");
+            return;
+        }
+        if (n == 2) {
+            sb.append("2");
+            return;
+        }
+        //如果是偶数
+        if (n % 2 == 0) {
+            sb.append("2");
+            //这里可以算出是用几个魔法币得到的
+            chooseMagic((n - 2) / 2, sb);
+        } else {
+            sb.append("1");
+            chooseMagic((n - 1) / 2, sb);
         }
     }
 
